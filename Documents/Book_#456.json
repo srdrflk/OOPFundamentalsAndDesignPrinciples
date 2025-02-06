@@ -1,0 +1,9 @@
+{
+  "DocumentNumber": "456",
+  "Title": "C# Programming",
+  "Authors": ["Alice Johnson"],
+  "DatePublished": "2019-05-15",
+  "ISBN": "978-3-16-148410-0",
+  "NumberOfPages": 500,
+  "Publisher": "Tech Publications"
+}

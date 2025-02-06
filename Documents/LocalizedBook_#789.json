@@ -1,0 +1,11 @@
+{
+  "DocumentNumber": "789",
+  "Title": "Advanced C#",
+  "Authors": ["Bob Brown"],
+  "DatePublished": "2021-08-20",
+  "ISBN": "978-1-23-456789-0",
+  "NumberOfPages": 600,
+  "OriginalPublisher": "Global Books",
+  "CountryOfLocalization": "Germany",
+  "LocalPublisher": "Local Books GmbH"
+}
