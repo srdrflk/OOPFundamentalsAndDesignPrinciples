@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,14 @@ namespace OOPFundamentalsAndDesignPrinciples
     public class Storage
     {
         private readonly string _storagePath;
+        private readonly MemoryCache _cache;
+        private readonly CacheConfiguration _cacheConfig;
 
-        public Storage(string storagePath)
+        public Storage(string storagePath, CacheConfiguration cacheConfig)
         {
             _storagePath = storagePath;
+            _cacheConfig = cacheConfig;
+            _cache = new MemoryCache(new MemoryCacheOptions());
         }
 
         // Search for documents by document number
@@ -25,15 +30,38 @@ namespace OOPFundamentalsAndDesignPrinciples
 
             foreach (var file in files)
             {
-                var json = File.ReadAllText(file);
-                var document = DeserializeDocument(json);
-                if (document != null)
+                var cacheKey = Path.GetFileNameWithoutExtension(file);
+                if (_cache.TryGetValue(cacheKey, out Document cachedDoc))
                 {
-                    documents.Add(document);
+                    documents.Add(cachedDoc);
+                }
+                else
+                {
+                    var json = File.ReadAllText(file);
+                    var document = DeserializeDocument(json);
+                    if (document != null)
+                    {
+                        documents.Add(document);
+                        CacheDocument(cacheKey, document);
+                    }
                 }
             }
 
             return documents;
+        }
+
+        private void CacheDocument(string cacheKey, Document document)
+        {
+            var cacheExpiration = _cacheConfig.CacheExpiration.GetValueOrDefault(document.GetType());
+
+            if (cacheExpiration != TimeSpan.Zero) // Skip caching if expiration is zero
+            {
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = cacheExpiration
+                };
+                _cache.Set(cacheKey, document, cacheEntryOptions);
+            }
         }
 
         // Deserialize JSON to the appropriate document type
@@ -53,7 +81,7 @@ namespace OOPFundamentalsAndDesignPrinciples
             {
                 return JsonSerializer.Deserialize<Book>(json, options);
             }
-            else if (json.Contains("\"ReleaseNumber\"")) // Check for Magazine
+            else if (json.Contains("\"ReleaseNumber\""))
             {
                 return JsonSerializer.Deserialize<Magazine>(json, options);
             }

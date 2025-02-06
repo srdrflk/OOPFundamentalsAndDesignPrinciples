@@ -14,6 +14,7 @@ namespace OOPFundamentalsAndDesignPrinciples
             public string Title { get; set; }
             public string[] Authors { get; set; }
             public DateTime DatePublished { get; set; }
+            public DateTime ExpirationDate { get; set; }
         }
 
         public class Patent : Document
@@ -27,6 +28,7 @@ namespace OOPFundamentalsAndDesignPrinciples
             public string ISBN { get; set; }
             public int NumberOfPages { get; set; }
             public string Publisher { get; set; }
+            public DateTime ExpirationDate { get; set; }
         }
 
         public class LocalizedBook : Book
@@ -34,11 +36,13 @@ namespace OOPFundamentalsAndDesignPrinciples
             public string OriginalPublisher { get; set; }
             public string CountryOfLocalization { get; set; }
             public string LocalPublisher { get; set; }
+            public DateTime ExpirationDate { get; set; }
         }
         public class Magazine : Document
         {
             public string Publisher { get; set; }
             public int ReleaseNumber { get; set; }
+            public DateTime ExpirationDate { get; set; }
         }
     }
 }
