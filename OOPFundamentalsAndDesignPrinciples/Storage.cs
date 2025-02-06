@@ -53,6 +53,10 @@ namespace OOPFundamentalsAndDesignPrinciples
             {
                 return JsonSerializer.Deserialize<Book>(json, options);
             }
+            else if (json.Contains("\"ReleaseNumber\"")) // Check for Magazine
+            {
+                return JsonSerializer.Deserialize<Magazine>(json, options);
+            }
 
             return null;
         }

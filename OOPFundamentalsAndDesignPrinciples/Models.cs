@@ -35,5 +35,10 @@ namespace OOPFundamentalsAndDesignPrinciples
             public string CountryOfLocalization { get; set; }
             public string LocalPublisher { get; set; }
         }
+        public class Magazine : Document
+        {
+            public string Publisher { get; set; }
+            public int ReleaseNumber { get; set; }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using OOPFundamentalsAndDesignPrinciples;
 using System;
 using System.Collections.Generic;
+using static OOPFundamentalsAndDesignPrinciples.Models;
 
 namespace FileCabinetApp
 {
@@ -29,6 +30,7 @@ namespace FileCabinetApp
                 {
                     Console.WriteLine($"Type: {doc.GetType().Name}, Title: {doc.Title}, Authors: {string.Join(", ", doc.Authors)}");
                 }
+                
             }
         }
     }
