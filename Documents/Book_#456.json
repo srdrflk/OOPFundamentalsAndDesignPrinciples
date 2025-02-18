@@ -1,4 +1,5 @@
 {
+  "DocType": "Book",
   "DocumentNumber": "456",
   "Title": "C# Programming",
   "Authors": ["Alice Johnson"],

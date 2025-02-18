@@ -1,4 +1,5 @@
 {
+  "DocType": "LocalizedBook",
   "DocumentNumber": "789",
   "Title": "Advanced C#",
   "Authors": ["Bob Brown"],

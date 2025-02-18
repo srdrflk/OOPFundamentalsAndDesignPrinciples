@@ -69,21 +69,34 @@ namespace OOPFundamentalsAndDesignPrinciples
         {
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            if (json.Contains("\"UniqueId\""))
+            try
             {
-                return JsonSerializer.Deserialize<Patent>(json, options);
+                var jsonObject = JsonDocument.Parse(json).RootElement;
+
+                // Retrieve the value of "DocType" from the JSON object
+                if (jsonObject.TryGetProperty("DocType", out var docType))
+                {
+                    if (docType.GetString().Equals("Patent", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return JsonSerializer.Deserialize<Patent>(json, options);
+                    }
+                    else if (docType.GetString().Equals("LocalizedBook", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return JsonSerializer.Deserialize<LocalizedBook>(json, options);
+                    }
+                    else if (docType.GetString().Equals("Book", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return JsonSerializer.Deserialize<Book>(json, options);
+                    }
+                    else if (docType.GetString().Equals("Magazine", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return JsonSerializer.Deserialize<Magazine>(json, options);
+                    }
+                }
             }
-            else if (json.Contains("\"CountryOfLocalization\""))
+            catch (JsonException ex)
             {
-                return JsonSerializer.Deserialize<LocalizedBook>(json, options);
-            }
-            else if (json.Contains("\"ISBN\""))
-            {
-                return JsonSerializer.Deserialize<Book>(json, options);
-            }
-            else if (json.Contains("\"ReleaseNumber\""))
-            {
-                return JsonSerializer.Deserialize<Magazine>(json, options);
+                Console.WriteLine($"Error deserializing JSON: {ex.Message}");
             }
 
             return null;
